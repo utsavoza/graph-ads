@@ -60,14 +60,14 @@ public abstract class Graph {
 	}
 	
 	/**
-	 * Get the list of vertices that a 2 hops away from the vertex in 
+	 * Get the list of vertices that are 2 hops away from the vertex in 
 	 * question. 
 	 * 
 	 * @param v The starting vertex
 	 * @return A list if vertices that can be reached in exactly two hops
 	 * (by following two edges) from vertex v.
 	 * 
-	 * TODO: Implementation 2 in all subclass of Graph implementations.
+	 * TODO: Implementation 2 in all subclasses of Graph implementations.
 	 */
 	public abstract List<Integer> getDistance2(int v);
 	
