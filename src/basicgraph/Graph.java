@@ -1,5 +1,7 @@
 package basicgraph;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,8 +57,17 @@ public abstract class Graph {
 	 * @return The degree sequence of the graph
 	 */
 	public List<Integer> degreeSequence() {
-		//TODO: Implementation 1
-		return null;
+		List<Integer> degSequence = new ArrayList<Integer>();
+		for(int i = 0; i < getNumVertices(); i++) {
+			degSequence.add(getNeighbors(i).size() + getInNeighbors(i).size());
+		}
+		degSequence.sort(new Comparator<Integer>() {
+			@Override
+			public int compare(Integer o1, Integer o2) {
+				return o2.compareTo(o1);
+			}
+		});
+		return degSequence; 
 	}
 	
 	/**
