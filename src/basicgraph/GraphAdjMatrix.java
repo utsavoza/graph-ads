@@ -55,8 +55,11 @@ public class GraphAdjMatrix extends Graph {
 
 	@Override
 	public List<Integer> getDistance2(int v) {
-		// TODO: Implementation 3
-		return null;
+		List<Integer> twoHop = new ArrayList<Integer>();
+		for(int u: getNeighbors(v)) {
+			twoHop.addAll(getNeighbors(u));
+		}
+		return twoHop;
 	}
 
 	@Override
