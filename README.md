@@ -1,1 +1,1 @@
-# graph-ads
+# maze-solver
