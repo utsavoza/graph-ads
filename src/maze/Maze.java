@@ -16,9 +16,7 @@ public final class Maze {
   private int height;
 
   public Maze() {
-    cells = new MazeNode[DEFAULT_SIZE][DEFAULT_SIZE];
-    this.width = DEFAULT_SIZE;
-    this.height = DEFAULT_SIZE;
+    initialise(DEFAULT_SIZE, DEFAULT_SIZE);
   }
 
   public Maze(String mazeFilePath) {
@@ -27,22 +25,20 @@ public final class Maze {
   }
 
   public Maze(int width, int height) {
+    initialise(width, height);
+  }
+
+  void initialise(int width, int height) {
     cells = new MazeNode[width][height];
     this.width = width;
     this.height = height;
   }
 
-  public void initialise(int width, int height) {
-    cells = new MazeNode[width][height];
-    this.width = width;
-    this.height = height;
-  }
-
-  public void addNode(int row, int column) {
+  void addNode(int row, int column) {
     cells[row][column] = new MazeNode(row, column);
   }
 
-  public void linkEdges() {
+  void linkEdges() {
     int numRows = cells.length;
     for (int r = 0; r < numRows; r++) {
       int numCols = cells[r].length;
@@ -65,6 +61,7 @@ public final class Maze {
     }
   }
 
+  /** Pretty prints the maze to the console. */
   public void printMaze() {
     for (int r = 0; r < height; r++) {
       for (int c = 0; c < width; c++) {
@@ -78,7 +75,11 @@ public final class Maze {
     }
   }
 
-  public String solution() {
+  /**
+   * Behaves exactly like {@link #printMaze()}, except it returns a string instead of printing
+   * the maze on the console.
+   */
+  public String getMazeString() {
     StringBuilder sb = new StringBuilder();
     for (int r = 0; r < height; r++) {
       for (int c = 0; c < width; c++) {
@@ -93,6 +94,7 @@ public final class Maze {
     return sb.toString();
   }
 
+  /** Sets the markers on the maze according to the path. */
   public void setPath(List<MazeNode> path) {
     int index = 0;
     for (MazeNode n : path) {
@@ -107,6 +109,7 @@ public final class Maze {
     }
   }
 
+  /** Clears the existing solution path from the maze. Reverts back to the initial maze problem. */
   public void clearPath() {
     for (int r = 0; r < cells.length; r++) {
       for (int c = 0; c < cells[r].length; c++) {
@@ -118,6 +121,16 @@ public final class Maze {
     }
   }
 
+  /**
+   * Generates a DFS path for the maze problem. The method however doesn't set the markers on the
+   * maze. In order to do so, {@link #setPath(List)} needs to be called explicitly.
+   *
+   * @param startRow the source vertex row index.
+   * @param startCol the source vertex column index.
+   * @param endRow the goal vertex row index.
+   * @param endCol the goal vertex column index.
+   * @return List of maze nodes that represents the DFS solution to the problem.
+   */
   public List<MazeNode> dfs(int startRow, int startCol, int endRow, int endCol) {
     MazeNode start = cells[startRow][startCol];
     MazeNode goal = cells[endRow][endCol];
@@ -176,6 +189,16 @@ public final class Maze {
     return path;
   }
 
+  /**
+   * Generates a BFS path for the maze problem. The method however doesn't set the markers on the
+   * maze. In order to do so, {@link #setPath(List)} needs to be called explicitly.
+   *
+   * @param startRow the source vertex row index.
+   * @param startCol the source vertex column index.
+   * @param endRow the goal vertex row index.
+   * @param endCol the goal vertex colum index.
+   * @return List of maze nodes that represents the DFS solution to the problem.
+   */
   public List<MazeNode> bfs(int startRow, int startCol, int endRow, int endCol) {
     MazeNode start = cells[startRow][startCol];
     MazeNode goal = cells[endRow][endCol];
@@ -223,22 +246,4 @@ public final class Maze {
     path.addFirst(start);
     return path;
   }
-
-  //public static void main(String args[]) {
-  //  String mazeFile = "data/mazes/maze1.maze";
-  //  Maze maze = new Maze(mazeFile);
-  //  System.out.println("Maze:");
-  //  maze.printMaze();
-  //
-  //  List<MazeNode> path = maze.dfs(3, 3, 2, 0);
-  //  System.out.println("\n\nDFS Path:");
-  //  maze.setPath(path);
-  //  maze.printMaze();
-  //
-  //  maze.clearPath();
-  //
-  //  System.out.println("\n\nBFS Path:");
-  //  maze.setPath(maze.bfs(3, 3, 2, 0));
-  //  maze.printMaze();
-  //}
 }
