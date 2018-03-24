@@ -1,6 +1,6 @@
 maze-solver
 ===========
-A simple CLI based maze solver that provides implementations of **graph** data structure and their 
+A simple console based maze solver that provides implementations of **graph** data structure and their 
 basic search techniques (breadth-first-search and depth-first-search) to demonstrate and contrast 
 their behavior to the same problem i.e. a maze in this case.
 
