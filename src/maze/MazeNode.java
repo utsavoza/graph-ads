@@ -5,10 +5,10 @@ import java.util.List;
 
 public class MazeNode {
 
-  private List<MazeNode> neighbors;
   private int row;
   private int column;
   private char displayChar;
+  private List<MazeNode> neighbors;
 
   public static final char EMPTY = '-';
   public static final char PATH = 'o';
@@ -18,7 +18,7 @@ public class MazeNode {
   public MazeNode(int row, int column) {
     this.row = row;
     this.column = column;
-    neighbors = new LinkedList<MazeNode>();
+    neighbors = new LinkedList<>();
     displayChar = EMPTY;
   }
 
@@ -46,5 +46,25 @@ public class MazeNode {
     this.displayChar = displayChar;
   }
 
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof MazeNode)) {
+      return false;
+    }
+    MazeNode anotherNode = (MazeNode) obj;
+    return this.row == anotherNode.row
+        && this.column == anotherNode.column
+        && this.displayChar == anotherNode.displayChar
+        && this.neighbors.equals(anotherNode.neighbors);
+  }
 
+  @Override public int hashCode() {
+    int hash = 17;
+    hash += 31 * this.row + hash;
+    hash += 31 * this.column + hash;
+    hash += 31 * this.displayChar + hash;
+    return hash;
+  }
 }

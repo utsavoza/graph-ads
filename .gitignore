@@ -1,1 +1,8 @@
-/bin/
+bin
+gen
+out
+lib
+
+.idea
+*.iml
+classes

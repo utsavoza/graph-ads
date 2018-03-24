@@ -10,29 +10,25 @@ public class GraphAdjList extends Graph {
   private Map<Integer, ArrayList<Integer>> adjListMap;
 
   public GraphAdjList() {
-    adjListMap = new HashMap<Integer, ArrayList<Integer>>();
+    adjListMap = new HashMap<>();
   }
 
-  @Override
-  public void implementAddVertex() {
+  @Override public void implementAddVertex() {
     int v = getNumVertices();
-    ArrayList<Integer> neighbors = new ArrayList<Integer>();
+    ArrayList<Integer> neighbors = new ArrayList<>();
     adjListMap.put(v, neighbors);
   }
 
-  @Override
-  public void implementAddEdge(int v, int w) {
+  @Override public void implementAddEdge(int v, int w) {
     (adjListMap.get(v)).add(w);
   }
 
-  @Override
-  public List<Integer> getNeighbors(int v) {
-    return new ArrayList<Integer>(adjListMap.get(v));
+  @Override public List<Integer> getNeighbors(int v) {
+    return new ArrayList<>(adjListMap.get(v));
   }
 
-  @Override
-  public List<Integer> getInNeighbors(int v) {
-    List<Integer> inNeighbors = new ArrayList<Integer>();
+  @Override public List<Integer> getInNeighbors(int v) {
+    List<Integer> inNeighbors = new ArrayList<>();
     for (int u : adjListMap.keySet()) {
       for (int w : adjListMap.get(u)) {
         if (v == w) {
@@ -43,25 +39,28 @@ public class GraphAdjList extends Graph {
     return inNeighbors;
   }
 
-  @Override
-  public List<Integer> getDistance2(int v) {
-    List<Integer> twoHop = new ArrayList<Integer>();
+  @Override public List<Integer> getTwoHopDistance(int v) {
+    List<Integer> twoHop = new ArrayList<>();
     for (int u : getNeighbors(v)) {
       twoHop.addAll(getNeighbors(u));
     }
     return twoHop;
   }
 
-  @Override
-  public String adjacencyString() {
-    String s = "Adjacency List";
-    s += " (size " + getNumVertices() + "+" + getNumEdges() + " integers)";
+  @Override public String adjacencyString() {
+    StringBuilder s = new StringBuilder("Adjacency List");
+
+    s.append(" (size ")
+        .append(getNumVertices())
+        .append("+")
+        .append(getNumEdges())
+        .append(" integers)");
 
     for (int v : adjListMap.keySet()) {
       for (int w : adjListMap.get(v)) {
-        s += w + ", ";
+        s.append(w).append(", ");
       }
     }
-    return s;
+    return s.toString();
   }
 }

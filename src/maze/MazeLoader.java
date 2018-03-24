@@ -4,15 +4,17 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class MazeLoader {
+public final class MazeLoader {
+
+  private MazeLoader() {
+    throw new AssertionError("no instances");
+  }
 
   public static void loadMaze(String filename, Maze maze) {
-    BufferedReader reader = null;
-    try {
+    try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
       String nextLine;
       int width = 0;
       int height = 0;
-      reader = new BufferedReader(new FileReader(filename));
       if ((nextLine = reader.readLine()) != null) {
         String[] dims = nextLine.split(" ");
         width = Integer.parseInt(dims[0]);
@@ -34,7 +36,6 @@ public class MazeLoader {
           currCol++;
         }
         currRow++;
-
       }
       while (currRow < height) {
         for (int c = 0; c < width; c++) {
@@ -47,8 +48,6 @@ public class MazeLoader {
       System.err.println("Problem loading maze file: " + filename);
       e.printStackTrace();
     }
-
     maze.linkEdges();
   }
-
 }

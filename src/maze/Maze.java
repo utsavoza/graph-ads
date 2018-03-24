@@ -8,18 +8,22 @@ import java.util.ListIterator;
 import java.util.Queue;
 import java.util.Stack;
 
-public class Maze {
+public final class Maze {
 
+  private final int DEFAULT_SIZE = 10;
   private MazeNode[][] cells;
   private int width;
   private int height;
-
-  private final int DEFAULT_SIZE = 10;
 
   public Maze() {
     cells = new MazeNode[DEFAULT_SIZE][DEFAULT_SIZE];
     this.width = DEFAULT_SIZE;
     this.height = DEFAULT_SIZE;
+  }
+
+  public Maze(String mazeFilePath) {
+    this();
+    MazeLoader.loadMaze(mazeFilePath, this);
   }
 
   public Maze(int width, int height) {
@@ -74,6 +78,21 @@ public class Maze {
     }
   }
 
+  public String solution() {
+    StringBuilder sb = new StringBuilder();
+    for (int r = 0; r < height; r++) {
+      for (int c = 0; c < width; c++) {
+        if (cells[r][c] == null) {
+          sb.append("*");
+        } else {
+          sb.append(cells[r][c].getDisplayChar());
+        }
+      }
+      sb.append("\n");
+    }
+    return sb.toString();
+  }
+
   public void setPath(List<MazeNode> path) {
     int index = 0;
     for (MazeNode n : path) {
@@ -105,23 +124,23 @@ public class Maze {
 
     if (start == null || goal == null) {
       System.out.println("Start or end node is null!. No path exists");
-      return new LinkedList<MazeNode>();
+      return new LinkedList<>();
     }
 
-    HashMap<MazeNode, MazeNode> parentMap = new HashMap<MazeNode, MazeNode>();
+    HashMap<MazeNode, MazeNode> parentMap = new HashMap<>();
     boolean found = dfsSearch(start, goal, parentMap);
 
     if (!found) {
       System.out.println("No path exists");
-      return new LinkedList<MazeNode>();
+      return new LinkedList<>();
     }
 
     return constructPath(start, goal, parentMap);
   }
 
   private boolean dfsSearch(MazeNode start, MazeNode goal, HashMap<MazeNode, MazeNode> parentMap) {
-    HashSet<MazeNode> visited = new HashSet<MazeNode>();
-    Stack<MazeNode> toExplore = new Stack<MazeNode>();
+    HashSet<MazeNode> visited = new HashSet<>();
+    Stack<MazeNode> toExplore = new Stack<>();
     toExplore.push(start);
     boolean found = false;
 
@@ -147,7 +166,7 @@ public class Maze {
 
   private List<MazeNode> constructPath(MazeNode start, MazeNode goal,
       HashMap<MazeNode, MazeNode> parentMap) {
-    LinkedList<MazeNode> path = new LinkedList<MazeNode>();
+    LinkedList<MazeNode> path = new LinkedList<>();
     MazeNode current = goal;
     while (current != start) {
       path.addFirst(current);
@@ -158,18 +177,17 @@ public class Maze {
   }
 
   public List<MazeNode> bfs(int startRow, int startCol, int endRow, int endCol) {
-
     MazeNode start = cells[startRow][startCol];
     MazeNode goal = cells[endRow][endCol];
 
     if (start == null || goal == null) {
       System.out.println("Start or Goal node is null! No path exists.");
-      return new LinkedList<MazeNode>();
+      return new LinkedList<>();
     }
 
-    HashMap<MazeNode, MazeNode> parentMap = new HashMap<MazeNode, MazeNode>();
-    HashSet<MazeNode> visited = new HashSet<MazeNode>();
-    Queue<MazeNode> toExplore = new LinkedList<MazeNode>();
+    HashMap<MazeNode, MazeNode> parentMap = new HashMap<>();
+    HashSet<MazeNode> visited = new HashSet<>();
+    Queue<MazeNode> toExplore = new LinkedList<>();
     toExplore.add(start);
     boolean found = false;
 
@@ -193,10 +211,10 @@ public class Maze {
 
     if (!found) {
       System.out.println("No path found!");
-      return new LinkedList<MazeNode>();
+      return new LinkedList<>();
     }
 
-    LinkedList<MazeNode> path = new LinkedList<MazeNode>();
+    LinkedList<MazeNode> path = new LinkedList<>();
     MazeNode current = goal;
     while (current != start) {
       path.addFirst(current);
@@ -206,21 +224,21 @@ public class Maze {
     return path;
   }
 
-  public static void main(String args[]) {
-    String mazeFile = "data/mazes/maze1.maze";
-    Maze maze = new Maze();
-    MazeLoader.loadMaze(mazeFile, maze);
-    maze.printMaze();
-    
-    List<MazeNode> path = maze.dfs(3, 3, 2, 0);
-    System.out.println("\n\nDFS Path: \n");
-    maze.setPath(path);
-    maze.printMaze();
-    
-    maze.clearPath();
-    
-    System.out.println("\n\nBFS Path: ");
-    maze.setPath(maze.bfs(3, 3, 2, 0));
-    maze.printMaze();
-  }
+  //public static void main(String args[]) {
+  //  String mazeFile = "data/mazes/maze1.maze";
+  //  Maze maze = new Maze(mazeFile);
+  //  System.out.println("Maze:");
+  //  maze.printMaze();
+  //
+  //  List<MazeNode> path = maze.dfs(3, 3, 2, 0);
+  //  System.out.println("\n\nDFS Path:");
+  //  maze.setPath(path);
+  //  maze.printMaze();
+  //
+  //  maze.clearPath();
+  //
+  //  System.out.println("\n\nBFS Path:");
+  //  maze.setPath(maze.bfs(3, 3, 2, 0));
+  //  maze.printMaze();
+  //}
 }

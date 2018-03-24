@@ -51,47 +51,39 @@ public abstract class Graph {
 
   /**
    * The degree sequence of a graph is sorted list of the degrees of the vertices in the graph
-   * 
+   *
    * @return The degree sequence of the graph
    */
   public List<Integer> degreeSequence() {
-    List<Integer> degSequence = new ArrayList<Integer>();
+    List<Integer> degSequence = new ArrayList<>();
     for (int i = 0; i < getNumVertices(); i++) {
       degSequence.add(getNeighbors(i).size() + getInNeighbors(i).size());
     }
-    degSequence.sort(new Comparator<Integer>() {
-      @Override
-      public int compare(Integer o1, Integer o2) {
-        return o2.compareTo(o1);
-      }
-    });
+    degSequence.sort(Comparator.reverseOrder());
     return degSequence;
   }
 
   /**
-   * Get the list of vertices that are 2 hops away from the vertex in question.
-   * 
+   * Get the list of vertices that are 2 steps away from the given vertex.
+   *
    * @param v The starting vertex
-   * @return A list if vertices that can be reached in exactly two hops (by following two edges)
-   *         from vertex v.
-   * 
-   * TODO: Implementation 2 in all subclasses of Graph implementations.
+   * @return A list if vertices that can be reached in exactly two steps (by following two edges) from vertex v.
    */
-  public abstract List<Integer> getDistance2(int v);
-
+  public abstract List<Integer> getTwoHopDistance(int v);
 
   public String toString() {
     String s = "\nGraph with " + numVertices + " vertices and " + numEdges + " edges.\n";
     s += "Degree sequence: " + degreeSequence() + " vertices and " + numEdges + " edges.\n";
-    if (numVertices <= 20)
+    if (numVertices <= 20) {
       s += adjacencyString();
+    }
     return s;
   }
 
   public abstract String adjacencyString();
 
   public void initializeLabels() {
-    vertexLabels = new HashMap<Integer, String>();
+    vertexLabels = new HashMap<>();
   }
 
   public boolean hasVertex(int v) {
@@ -103,18 +95,15 @@ public abstract class Graph {
   }
 
   public void addLabel(int v, String s) {
-    if (v < getNumVertices() && !vertexLabels.containsKey(s)) {
+    if (v < getNumVertices() && !vertexLabels.containsKey(v)) {
       vertexLabels.put(v, s);
     } else {
-      System.out.println("ERROR: tried to label a vetex that is out of range or already labeled");
+      System.out.println("ERROR: tried to label a vertex that is out of range or already labeled");
     }
   }
 
   public String getLabel(int v) {
-    if (vertexLabels.containsKey(v)) {
-      return vertexLabels.get(v);
-    } else
-      return null;
+    return vertexLabels.getOrDefault(v, null);
   }
 
   public int getIndex(String s) {
